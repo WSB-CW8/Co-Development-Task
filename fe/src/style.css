@@ -36,10 +36,12 @@ h1 {
 }
 
 #app {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
@@ -92,5 +94,34 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+#map {
+  height: 600px;
+  width: 100%;
+}
+
+.leaflet-div-icon {
+  background: none !important;
+  border: none !important;
+}
+
+/* Small devices (landscape phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  #app {
+    flex-direction: row;
   }
 }
