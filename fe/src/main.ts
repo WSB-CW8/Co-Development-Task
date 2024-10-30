@@ -1,24 +1,20 @@
-import "./style.css";
-import typescriptLogo from "./typescript.svg";
-import viteLogo from "/vite.svg";
-import { setupCounter } from "./counter.ts";
+import './style.css';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
+document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+  
+    <div>
+      <h1>Tutaj coś będzie kiedyś</h1>
     </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
+    
+    <div id="map"></div>
+ 
 `;
 
-setupCounter(document.querySelector<HTMLButtonElement>("#counter")!);
+const map = L.map('map').setView([52.259788, 21.040546], 13);
+
+// Load and display tile layer (OpenStreetMap tiles)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
+}).addTo(map);
