@@ -13,14 +13,15 @@ public class DataRetrievalService {
 
     private final RestTemplate restTemplate;
     // TODO: move outside
-    final String API_KEY = "&apikey=dd856223-f8b7-49da-ba3f-6d9aef10eade";
+    final String API_KEY = "&apikey=<INSERT_API_KEY_HERE>";
 
     @Autowired
     public DataRetrievalService(RestTemplate restTemplate){
         this.restTemplate = restTemplate;
     }
 
-    @Scheduled(fixedRate = 10000)
+    // Not scheduling for now
+    // @Scheduled(fixedRate = 10000)
     public IncomingData fetchData(){
         String url = "https://api.um.warszawa.pl/api/action/busestrams_get/?resource_id=f2e5503e-927d-4ad3-9500-4ab9e55deb59&type=1" + API_KEY;
 
