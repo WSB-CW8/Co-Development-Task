@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Locale;
+import java.util.Objects;
+
 @Service
 public class DataRetrievalService {
 
@@ -28,12 +31,10 @@ public class DataRetrievalService {
 
         try {
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-            String jsonResponse = response.getBody();
+            String jsonResponse = Objects.requireNonNull(response.getBody()).toLowerCase(Locale.ROOT);
 
             // Parse or use the data as needed
-            System.out.println(jsonResponse);
-            IncomingData incomingData = mapper.readValue(jsonResponse, IncomingData.class);
-            return incomingData;
+            return mapper.readValue(jsonResponse, IncomingData.class);
 
         } catch (Exception e) {
             e.printStackTrace();
