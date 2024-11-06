@@ -2,7 +2,7 @@ package com.c8.api.models;
 
 public class BusLocation {
     private String lines;
-    private String vehicleNumber;
+    private String vehiclenumber;
     private String brigade;
     private Float lon;
     private Float lat;
@@ -17,12 +17,12 @@ public class BusLocation {
         return this;
     }
 
-    public String getVehicleNumber() {
-        return vehicleNumber;
+    public String getVehiclenumber() {
+        return vehiclenumber;
     }
 
-    public BusLocation setVehicleNumber(String vehicleNumber) {
-        this.vehicleNumber = vehicleNumber;
+    public BusLocation setVehiclenumber(String vehiclenumber) {
+        this.vehiclenumber = vehiclenumber;
         return this;
     }
 

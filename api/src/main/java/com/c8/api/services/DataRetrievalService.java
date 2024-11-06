@@ -1,24 +1,28 @@
 package com.c8.api.services;
 
-import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.c8.api.models.IncomingData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Locale;
+import java.util.Objects;
 
 @Service
 public class DataRetrievalService {
 
     private final RestTemplate restTemplate;
     // TODO: move outside
-    final String API_KEY = "&apikey=<INSERT_API_KEY_HERE>";
+    final String API_KEY = "&apikey=";
 
     @Autowired
     public DataRetrievalService(RestTemplate restTemplate){
         this.restTemplate = restTemplate;
     }
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     // Not scheduling for now
     // @Scheduled(fixedRate = 10000)
@@ -27,10 +31,11 @@ public class DataRetrievalService {
 
         try {
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-            String jsonResponse = response.getBody();
+            String jsonResponse = Objects.requireNonNull(response.getBody()).toLowerCase(Locale.ROOT);
 
             // Parse or use the data as needed
-            System.out.println(jsonResponse);
+            return mapper.readValue(jsonResponse, IncomingData.class);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
