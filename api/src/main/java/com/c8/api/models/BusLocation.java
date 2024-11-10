@@ -4,8 +4,8 @@ public class BusLocation {
     private String lines;
     private String vehiclenumber;
     private String brigade;
-    private Float lon;
-    private Float lat;
+    private double lon;
+    private double lat;
     private String time;
 
     public String getLines() {
@@ -35,20 +35,20 @@ public class BusLocation {
         return this;
     }
 
-    public Float getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public BusLocation setLon(Float lon) {
+    public BusLocation setLon(double lon) {
         this.lon = lon;
         return this;
     }
 
-    public Float getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public BusLocation setLat(Float lat) {
+    public BusLocation setLat(double lat) {
         this.lat = lat;
         return this;
     }
