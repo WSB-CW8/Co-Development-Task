@@ -14,3 +14,10 @@ Dodać odciśniętą kiszoną kapustę oraz wlać szklankę wody, wymieszać. Pr
 Kiełbasę obrać ze skóry, pokroić w kostkę i podsmażyć na patelni. Dodać do kapusty i gotować przez ok. 30 minut. Pod koniec dodać koncentrat pomidorowy.
 Mąkę podsmażyć na suchej patelni, gdy zacznie brązowieć dodać łyżkę masła i mieszać aż masło się rozpuści.
 Trzymając patelnię na ogniu dodać stopniowo kilka łyżek kapusty cały czas mieszając. Przełożyć zawartość patelni z powrotem do garnka, wymieszać i zagotować
+
+
+# BACKEND-SETUP
+TODO cała ścieżka do postawienia backendu (kopia application.properties na application-local.properties, uzupełnienie danych, uruchomienie dockera itd)
+
+# FRONTEND-SETUP
+TODO - cała ścieżka do postawienia frontu (kopia env'a, npm install itd)
