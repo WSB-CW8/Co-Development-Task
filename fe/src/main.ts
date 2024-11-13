@@ -20,31 +20,31 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 
 type BusData = {
-    lat: number;
-    lon: number;
-    lines: string;
-    vehiclenumber: string;
-    time: string;
-    brigade: string;
-}
+  lat: number;
+  lon: number;
+  lines: string;
+  vehiclenumber: string;
+  time: string;
+  brigade: string;
+};
 
 const fetchBusData = async () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
-    try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return await response.json() as {result:BusData[]}
-    } catch (error) {
-        console.error("Failed to fetch data:", error);
+  const apiUrl = import.meta.env.VITE_API_URL;
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+    return (await response.json()) as { result: BusData[] };
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+  }
 };
 const renderBuses = async () => {
-    const busData = await fetchBusData();
-    busData?.result.forEach(element => {
-        L.marker([element.lat, element.lon]).addTo(map)
-    });
-}
+  const busData = await fetchBusData();
+  busData?.result.forEach((element) => {
+    L.marker([element.lat, element.lon]).addTo(map);
+  });
+};
 
 renderBuses().then(() => console.log("Buses rendered")); //TODO do implementacji w dalszych taskach

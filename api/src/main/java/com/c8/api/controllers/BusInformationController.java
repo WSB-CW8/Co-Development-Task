@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping("/buses")
 public class BusInformationController {
@@ -29,12 +28,16 @@ public class BusInformationController {
     private MaxDistanceFiltrationService maxDistanceFiltrationService;
 
     @GetMapping
-    public ResponseEntity<IncomingData> getBusLocation(@RequestParam(required = false) Optional<Integer> maxDistance, @RequestParam(required = false) Optional<Double> lat, @RequestParam(required = false) Optional<Double> lon) {
-        List<BusLocation> busLocations = depotFiltrationService.removeDepotedBuses(dataRetrievalService.fetchData().getResult());
+    public ResponseEntity<IncomingData> getBusLocation(@RequestParam(required = false) Optional<Integer> maxDistance,
+            @RequestParam(required = false) Optional<Double> lat,
+            @RequestParam(required = false) Optional<Double> lon) {
+        List<BusLocation> busLocations = depotFiltrationService
+                .removeDepotedBuses(dataRetrievalService.fetchData().getResult());
         if (maxDistance.isEmpty()) {
             return ResponseEntity.ok(new IncomingData().setResult(busLocations));
-        } else  if (lat.isPresent() && lon.isPresent()) {
-            List<BusLocation> filteredLocations = maxDistanceFiltrationService.filterByDistance(busLocations, lat.get(), lon.get(), maxDistance.get());
+        } else if (lat.isPresent() && lon.isPresent()) {
+            List<BusLocation> filteredLocations = maxDistanceFiltrationService.filterByDistance(busLocations, lat.get(),
+                    lon.get(), maxDistance.get());
             return ResponseEntity.ok(new IncomingData().setResult(filteredLocations));
         }
         return ResponseEntity.badRequest().build();
