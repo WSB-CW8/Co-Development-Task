@@ -1,9 +1,32 @@
+# CO TO CORE, PLUGINY I RENDERERY
+
+## CORE
+
+Główny moduł aplikacji w który jest zaimplementowana cała logika.
+
+Podział zadań:
+
+- Dla laików:
+  - Implementacja pluginu napisanego przez kogoś innego
+- Dla programistów:
+  - Implementacja nowego pluginu
+  - Implementacja nowego renderera
+
+## PLUGINY
+
+- Każdy plugin to osobny moduł aplikacji, nie powinny być zależne od siebie
+
+## RENDERERY
+
+- Umożliwiają wyświetlanie danych w różny sposób, używane są w pluginach. Mogą być używane w wielu pluginach na raz.
+
 # WSB-CW8-Group-Project
+
 Project created during cooperative programming class.
 
 dupududpuudpdupupdupddupdupdup
 
-test 
+test
 
 Przepis na bigos
 
@@ -15,9 +38,10 @@ Kiełbasę obrać ze skóry, pokroić w kostkę i podsmażyć na patelni. Dodać
 Mąkę podsmażyć na suchej patelni, gdy zacznie brązowieć dodać łyżkę masła i mieszać aż masło się rozpuści.
 Trzymając patelnię na ogniu dodać stopniowo kilka łyżek kapusty cały czas mieszając. Przełożyć zawartość patelni z powrotem do garnka, wymieszać i zagotować
 
-
 # BACKEND-SETUP
+
 TODO cała ścieżka do postawienia backendu (kopia application.properties na application-local.properties, uzupełnienie danych, uruchomienie dockera itd)
 
 # FRONTEND-SETUP
+
 TODO - cała ścieżka do postawienia frontu (kopia env'a, npm install itd)

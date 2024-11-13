@@ -1,40 +1,27 @@
 import "./style.css";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { busPlugin } from "./core/plugins/BusPlugin";
+import { mapPlugin } from "./core/plugins/MapPlugin";
+import { Root } from "./core/root";
+import { DataFetcher } from "./core/utils/dataFetcher";
+import { MarkerRenderer } from "./core/renderers/MarkerRenderer";
+import { titlePlugin } from "./core/plugins/TitlePlugin";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+const dataFetcher = new DataFetcher(API_URL);
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  
-    <div>
-      <h1>Tutaj coś będzie kiedyś</h1>
-    </div>
-    
-    <div id="map"></div>
- 
+<div id="map"></div>
 `;
 
-const map = L.map("map").setView([52.259788, 21.040546], 13);
+const mapInstance = L.map("map"); // Assuming you have a map instance
 
-// Load and display tile layer (OpenStreetMap tiles)
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "&copy; OpenStreetMap contributors",
-}).addTo(map);
+const main = new Root([
+  titlePlugin("Warsaw Buses"),
+  mapPlugin(mapInstance),
+  busPlugin(dataFetcher, new MarkerRenderer(mapInstance)),
+]);
 
-const fetchBusData = async () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
-    try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch data:", error);
-    }
-};
-
-const renderBuses = async () => {
-    const busData = await fetchBusData();
-    console.log(busData.result);
-}
-
-renderBuses().then(() => console.log("Buses rendered")); //TODO do implementacji w dalszych taskach
+main.initialize();
