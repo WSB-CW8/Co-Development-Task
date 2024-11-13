@@ -20,6 +20,16 @@ Podział zadań:
 
 - Umożliwiają wyświetlanie danych w różny sposób, używane są w pluginach. Mogą być używane w wielu pluginach na raz.
 
+## JAK UŻYĆ PLUGINA?
+
+```
+const main = new Root([
+NowyPluginDodanyPrzezCiebie(Opcje Do inicjalizacji)
+]);
+```
+
+Dorzucamy plugin do Roota, który jest głównym modułem aplikacji. Nie musimy się martwić o to, że pluginy będą się ze sobą gryźć, ponieważ są one od siebie niezależne (Przynajmniej powinny jak nic nie zepsuliśmy).
+
 # WSB-CW8-Group-Project
 
 Project created during cooperative programming class.
