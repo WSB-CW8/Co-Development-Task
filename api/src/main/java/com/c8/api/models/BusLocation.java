@@ -62,11 +62,11 @@ public class BusLocation {
         return this;
     }
 }
-//{
-//        "Lines": "213",
-//        "Lon": 21.222504,
-//        "VehicleNumber": "1000",
-//        "Time": "2024-11-02 15:35:04",
-//        "Lat": 52.1609538,
-//        "Brigade": "3"
-//        }
+// {
+// "Lines": "213",
+// "Lon": 21.222504,
+// "VehicleNumber": "1000",
+// "Time": "2024-11-02 15:35:04",
+// "Lat": 52.1609538,
+// "Brigade": "3"
+// }
