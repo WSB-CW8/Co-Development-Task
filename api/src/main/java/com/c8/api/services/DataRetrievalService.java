@@ -21,7 +21,7 @@ public class DataRetrievalService {
     private String apiKey;
 
     @Autowired
-    public DataRetrievalService(RestTemplate restTemplate){
+    public DataRetrievalService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
@@ -29,8 +29,9 @@ public class DataRetrievalService {
 
     // Not scheduling for now
     // @Scheduled(fixedRate = 10000)
-    public IncomingData fetchData(){
-        String url = "https://api.um.warszawa.pl/api/action/busestrams_get/?resource_id=f2e5503e-927d-4ad3-9500-4ab9e55deb59&apikey=" + apiKey + "&type=1";
+    public IncomingData fetchData() {
+        String url = "https://api.um.warszawa.pl/api/action/busestrams_get/?resource_id=f2e5503e-927d-4ad3-9500-4ab9e55deb59&apikey="
+                + apiKey + "&type=1";
 
         try {
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
