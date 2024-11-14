@@ -2,6 +2,9 @@ import "./style.css";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import { Icon } from "leaflet";
+
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   
     <div>
@@ -43,11 +46,18 @@ const fetchBusData = async () => {
 const renderBuses = async () => {
   const busData = await fetchBusData();
   busData?.result.forEach((element) => {
-    const elementValues = Object.entries(element).map((value)=>{
-      return `${value[0]}: ${value[1]}`
-    })
-    const marker = L.marker([element.lat, element.lon]).addTo(map);
-    marker.bindPopup(elementValues.join("<br/>"))
+    const elementValues = Object.entries(element).map((value) => {
+      return `${value[0]}: ${value[1]}`;
+    });
+
+    const marker = L.marker([element.lat, element.lon], {
+      icon: new Icon({
+        iconUrl: markerIconPng,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+      }),
+    }).addTo(map);
+    marker.bindPopup(elementValues.join("<br/>"));
   });
 };
 
