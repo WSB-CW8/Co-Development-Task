@@ -43,7 +43,11 @@ const fetchBusData = async () => {
 const renderBuses = async () => {
   const busData = await fetchBusData();
   busData?.result.forEach((element) => {
-    L.marker([element.lat, element.lon]).addTo(map);
+    const elementValues = Object.entries(element).map((value)=>{
+      return `${value[0]}: ${value[1]}`
+    })
+    const marker = L.marker([element.lat, element.lon]).addTo(map);
+    marker.bindPopup(elementValues.join("<br/>"))
   });
 };
 
