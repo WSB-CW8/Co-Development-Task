@@ -5,4 +5,5 @@ export enum events {
   busDataFiltered = "busDataFiltered",
   busDataUpdated = "busDataUpdated",
   busDataFilterChanged = "busDataFilterChanged",
+  busDataFetchNewData = "busDataFetchNewData",
 }

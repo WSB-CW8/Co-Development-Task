@@ -1,12 +1,13 @@
 import "./style.css";
 import "leaflet/dist/leaflet.css";
 
+import { Core } from "./core/core";
 import { eventBus } from "./core/eventBus/EventBus";
-import { MapManager } from "./core/managers/MapManager";
-import { UIManager } from "./core/managers/UIManager";
-import { BusManager } from "./core/managers/BusManager";
-
-// Managers
+import { MapPlugin } from "./core/managers/MapPlugin";
+import { UIPlugin } from "./core/managers/UIPlugin";
+import { BusPlugin } from "./core/managers/BusPlugin";
+import { PeriodicEmitterPlugin } from "./core/managers/PeriodicEmitterPlugin";
+import { events } from "./core/eventBus/events";
 
 // Main App Initialization
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -14,19 +15,25 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <div id="map"></div>
 `;
 
-new MapManager(eventBus, "map", [52.259788, 21.040546], 13);
-const busManager = new BusManager(eventBus);
-const uiManager = new UIManager(eventBus);
+// Create Core
+const core = new Core(eventBus);
 
-const apiUrl = import.meta.env.VITE_API_URL;
+// Instantiate Plugins
+const mapPlugin = new MapPlugin(eventBus, "map", [52.259788, 21.040546], 13);
+const uiPlugin = new UIPlugin(eventBus);
+const busPlugin = new BusPlugin(eventBus);
+const refreshBusDataPlugin = new PeriodicEmitterPlugin(
+  eventBus,
+  events.busDataFetchNewData,
+  0,
+  10000
+);
 
-busManager
-  .fetchBuses(apiUrl, uiManager.getFilterSelectValue())
-  .then(() => console.log("Buses fetched and rendered."));
+// Register Plugins
+core.registerPlugin(mapPlugin);
+core.registerPlugin(uiPlugin);
+core.registerPlugin(busPlugin);
+core.registerPlugin(refreshBusDataPlugin);
 
-// Initial Data Fetch
-setInterval(() => {
-  busManager
-    .fetchBuses(apiUrl, uiManager.getFilterSelectValue())
-    .then(() => console.log("Buses fetched and rendered."));
-}, 10000);
+// Initialize Plugins
+core.initializePlugins();

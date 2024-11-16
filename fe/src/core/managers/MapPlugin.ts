@@ -3,23 +3,30 @@ import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { BusData } from "../types/types";
 import { events } from "../eventBus/events";
 import { EventBus } from "../eventBus/EventBus";
+import { Plugin } from "../core";
 
-class MapManager {
-  private map: Map;
+class MapPlugin implements Plugin {
+  private map!: Map;
   private markers: Marker[] = [];
 
   constructor(
-    eventBus: EventBus,
-    containerId: string,
-    center: [number, number],
-    zoom: number
-  ) {
-    this.map = L.map(containerId).setView(center, zoom);
+    private eventBus: EventBus,
+    private containerId: string,
+    private center: [number, number],
+    private zoom: number
+  ) {}
+
+  initialize(): void {
+    // Initialize map
+    this.map = L.map(this.containerId).setView(this.center, this.zoom);
+
+    // Add tile layer
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(this.map);
 
-    eventBus.on(events.busDataUpdated, (buses: BusData[]) => {
+    // Listen for events from the EventBus
+    this.eventBus.on(events.busDataUpdated, (buses: BusData[]) => {
       if (!this.markers.length) {
         this.updateBuses(buses);
         return;
@@ -29,12 +36,19 @@ class MapManager {
         this.moveMarker(bus.vehiclenumber, bus.lat, bus.lon);
       }
     });
-    eventBus.on(events.busDataFiltered, (buses: BusData[]) => {
+
+    this.eventBus.on(events.busDataFiltered, (buses: BusData[]) => {
       this.updateBuses(buses);
     });
   }
 
-  addMarker(lat: number, lon: number, description: string): Marker {
+  destroy(): void {
+    // Clean up markers and map instance
+    this.clearMarkers();
+    this.map.remove();
+  }
+
+  private addMarker(lat: number, lon: number, description: string): Marker {
     const marker = L.marker([lat, lon], {
       icon: new Icon({
         iconUrl: markerIconPng,
@@ -47,12 +61,12 @@ class MapManager {
     return marker;
   }
 
-  clearMarkers(): void {
+  private clearMarkers(): void {
     this.markers.forEach((marker) => this.map.removeLayer(marker));
     this.markers = [];
   }
 
-  updateBuses(buses: BusData[]): void {
+  private updateBuses(buses: BusData[]): void {
     this.clearMarkers();
     buses.forEach((bus) => {
       const description = `
@@ -65,7 +79,11 @@ class MapManager {
     });
   }
 
-  moveMarker(vehicleNumber: string, newLat: number, newLon: number): void {
+  private moveMarker(
+    vehicleNumber: string,
+    newLat: number,
+    newLon: number
+  ): void {
     const marker = this.markers.find((marker) =>
       marker
         .getPopup()
@@ -99,10 +117,6 @@ class MapManager {
       requestAnimationFrame(animateMarker);
     }
   }
-
-  getMarkers(): Marker[] {
-    return this.markers;
-  }
 }
 
-export { MapManager };
+export { MapPlugin };
