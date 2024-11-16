@@ -29,4 +29,4 @@ setInterval(() => {
   busManager
     .fetchBuses(apiUrl, uiManager.getFilterSelectValue())
     .then(() => console.log("Buses fetched and rendered."));
-}, 5000);
+}, 10000);
