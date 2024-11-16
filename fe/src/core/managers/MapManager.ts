@@ -21,7 +21,6 @@ class MapManager {
 
     eventBus.on(events.busDataUpdated, (buses: BusData[]) => {
       if (!this.markers.length) {
-        console.log(this.markers);
         this.updateBuses(buses);
         return;
       }
