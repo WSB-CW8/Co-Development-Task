@@ -14,7 +14,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <div id="map"></div>
 `;
 
-const mapManager = new MapManager(eventBus, "map", [52.259788, 21.040546], 13);
+new MapManager(eventBus, "map", [52.259788, 21.040546], 13);
 const busManager = new BusManager(eventBus);
 const uiManager = new UIManager(eventBus);
 

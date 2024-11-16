@@ -8,7 +8,6 @@ class BusManager {
 
   constructor(private eventBus: EventBus) {
     eventBus.on(events.busDataFilterChanged, (line: string) => {
-      console.log("line");
       this.filterBuses(line);
     });
   }

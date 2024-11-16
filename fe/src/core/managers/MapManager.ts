@@ -20,13 +20,9 @@ class MapManager {
     }).addTo(this.map);
 
     eventBus.on(events.busDataFetched, (buses: BusData[]) => {
-      console.log("Buses updated", buses);
-
       this.updateBuses(buses);
     });
     eventBus.on(events.busDataFiltered, (buses: BusData[]) => {
-      console.log("Buses filtered", buses);
-
       this.updateBuses(buses);
     });
   }
