@@ -19,8 +19,16 @@ class MapManager {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(this.map);
 
-    eventBus.on(events.busDataFetched, (buses: BusData[]) => {
-      this.updateBuses(buses);
+    eventBus.on(events.busDataUpdated, (buses: BusData[]) => {
+      if (!this.markers.length) {
+        console.log(this.markers);
+        this.updateBuses(buses);
+        return;
+      }
+
+      for (const bus of buses) {
+        this.moveMarker(bus.vehiclenumber, bus.lat, bus.lon);
+      }
     });
     eventBus.on(events.busDataFiltered, (buses: BusData[]) => {
       this.updateBuses(buses);
@@ -56,6 +64,45 @@ class MapManager {
         `;
       this.addMarker(bus.lat, bus.lon, description);
     });
+  }
+
+  moveMarker(vehicleNumber: string, newLat: number, newLon: number): void {
+    const marker = this.markers.find((marker) =>
+      marker
+        .getPopup()
+        ?.getContent()
+        ?.toString()
+        .includes(`Vehicle: ${vehicleNumber}`)
+    );
+
+    if (marker) {
+      const startLatLng = marker.getLatLng();
+      const endLatLng = L.latLng([newLat, newLon]);
+      const duration = 1000; // 1 second
+      const startTime = performance.now();
+
+      const animateMarker = (currentTime: number) => {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+
+        const currentLat =
+          startLatLng.lat + (endLatLng.lat - startLatLng.lat) * progress;
+        const currentLng =
+          startLatLng.lng + (endLatLng.lng - startLatLng.lng) * progress;
+
+        marker.setLatLng([currentLat, currentLng]);
+
+        if (progress < 1) {
+          requestAnimationFrame(animateMarker);
+        }
+      };
+
+      requestAnimationFrame(animateMarker);
+    }
+  }
+
+  getMarkers(): Marker[] {
+    return this.markers;
   }
 }
 

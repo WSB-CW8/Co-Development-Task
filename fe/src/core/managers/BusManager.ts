@@ -20,7 +20,9 @@ class BusManager {
       }
       const data = (await response.json()) as { result: BusData[] };
       this.buses = data.result;
-      this.filteredBuses = this.filterBuses(filter);
+      this.filteredBuses = data.result.filter((bus) =>
+        bus.lines.includes(filter)
+      );
       this.eventBus.emit(events.busDataUpdated, this.filteredBuses);
     } catch (error) {
       this.eventBus.emit(events.busDataError, error);

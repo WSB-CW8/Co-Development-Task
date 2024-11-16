@@ -20,6 +20,10 @@ const uiManager = new UIManager(eventBus);
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
+busManager
+  .fetchBuses(apiUrl, uiManager.getFilterSelectValue())
+  .then(() => console.log("Buses fetched and rendered."));
+
 // Initial Data Fetch
 setInterval(() => {
   busManager
