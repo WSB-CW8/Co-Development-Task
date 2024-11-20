@@ -59,11 +59,11 @@ jobs:
         run: |
           IMAGE_TAG=${{ steps.get-pr.outputs.pr-title }}
           docker build -t ghcr.io/wsb-cw8/co-development-task:${IMAGE_TAG} .
-          docker tag ghcr.io/wsb-cw8/co-development-task:${IMAGE_TAG} ghcr.io/${{ github.repository_owner }}/co-development-task:latest
+          docker tag ghcr.io/wsb-cw8/co-development-task:${IMAGE_TAG} ghcr.io/wsb-cw8/co-development-task:latest
 
       - name: Push Docker Image
         working-directory: ./api
         run: |
           IMAGE_TAG=${{ steps.get-pr.outputs.pr-title }}
-          docker push ghcr.io/${{ github.repository_owner }}/co-development-task:${IMAGE_TAG}
-          docker push ghcr.io/${{ github.repository_owner }}/co-development-task:latest
+          docker push ghcr.io/wsb-cw8/co-development-task:${IMAGE_TAG}
+          docker push ghcr.io/wsb-cw8/co-development-task:latest
