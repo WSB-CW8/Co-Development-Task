@@ -1,0 +1,63 @@
+name: Update ConfigMap and Deploy
+
+on:
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  update-configmap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: appleboy/ssh-action@v0.1.0
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.SSH_USERNAME}}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{secrets.SSH_PORT}}
+          command: |
+            # Forward port 6443 (Kubernetes API) to localhost on the GitHub runner
+            nohup ssh -L 6443:localhost:6443 -N &
+
+      - name: Set up Kubernetes CLI
+        uses: azure/setup-kubectl@v1
+        with:
+          kubectl-version: 'v1.31.2'
+
+      - name: Configure kubectl
+        run: |
+          # Create kubeconfig to access the local cluster via forwarded port
+          mkdir -p $HOME/.kube
+          echo "
+          apiVersion: v1
+          clusters:
+            - cluster:
+                server: https://localhost:6443
+              name: local-cluster
+          contexts:
+            - context:
+                cluster: local-cluster
+                user: kubernetes-admin
+              name: local-context
+          current-context: local-context
+          users:
+            - name: kubernetes-admin
+              user:
+                client-certificate-data: <certificate_data>
+                client-key-data: <key_data>
+          " > $HOME/.kube/config
+
+      - name: Update ConfigMap with Latest Tag
+        run: |
+          # Get the latest release tag from GitHub
+          IMAGE_TAG=$(curl -s https://api.github.com/repos/wsb-cw8/co-Development-Task/releases/latest | jq -r .tag_name)
+          
+          # Update the Kubernetes ConfigMap
+          kubectl -n <namespace> set env configmap/env IMAGE_TAG=${IMAGE_TAG}
+
+      - name: Rollout the Deployment
+        run: |
+          kubectl rollout restart deployment/co-dev-task -n default
