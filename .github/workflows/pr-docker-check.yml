@@ -17,15 +17,18 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Build Docker Image
+        working-directory: ./api
         run: |
-          docker build -f api/Dockerfile -t pr-docker-validation:temp .
+          docker build -f Dockerfile -t pr-docker-validation:temp .
 
       - name: Run Docker Container
+        working-directory: ./api
         run: |
           docker run -d --name pr-docker-test -p 8080:8080 pr-docker-validation:temp
         continue-on-error: false
 
       - name: Wait for Service to Start
+        working-directory: ./api
         run: |
           for i in {1..10}; do
             if curl -s http://localhost:8080/test | grep -q "Hello World!"; then
