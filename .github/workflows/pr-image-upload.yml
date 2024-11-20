@@ -47,13 +47,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Properties File
-        working-directory: ./api
-        run: |
-          echo "api.key=${{ secrets.API_KEY }}" > application.properties
-          echo "spring.application.name=api" > application.properties
-          echo "spring.profiles.active=local" > application.properties
-
       - name: Build Docker Image
         working-directory: ./api
         run: |

@@ -24,7 +24,7 @@ jobs:
       - name: Run Docker Container
         working-directory: ./api
         run: |
-          docker run -d --name pr-docker-test -p 8080:8080 pr-docker-validation:temp
+          docker run -d --name pr-docker-test -p 8080:8080 -e API_KEY=placeholder pr-docker-validation:temp
         continue-on-error: false
 
       - name: Wait for Service to Start
