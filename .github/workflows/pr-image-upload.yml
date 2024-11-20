@@ -1,0 +1,66 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Retrieve Pull Request Metadata
+        id: get-pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = await github.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "closed",
+              base: "main",
+              sort: "updated",
+              direction: "desc"
+            });
+            const mergedPR = pr.data.find(p => p.merged_at);
+            if (!mergedPR) {
+              core.setFailed("No merged pull request found targeting main.");
+              return;
+            }
+            core.setOutput("pr-title", mergedPR.title.replace(/\s+/g, '-').toLowerCase());
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Properties File
+        run: |
+          echo "api.key=${{ secrets.API_KEY }}" > application.properties
+          echo "spring.application.name=api" > application.properties
+          echo "spring.profiles.active=local" > application.properties
+
+      - name: Build Docker Image
+        run: |
+          IMAGE_TAG=CoDevAPI${{ steps.get-pr.outputs.pr-title }}
+          docker build -t ghcr.io/${{ github.repository_owner }}/co-development-task:${IMAGE_TAG} .
+          docker tag ghcr.io/${{ github.repository_owner }}/co-development-task:${IMAGE_TAG} ghcr.io/${{ github.repository_owner }}/co-development-task:latest
+
+      - name: Push Docker Image
+        run: |
+          IMAGE_TAG=${{ steps.get-pr.outputs.pr-title }}
+          docker push ghcr.io/${{ github.repository_owner }}/co-development-task:${IMAGE_TAG}
+          docker push ghcr.io/${{ github.repository_owner }}/co-development-task:latest
