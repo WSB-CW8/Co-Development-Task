@@ -57,7 +57,7 @@ jobs:
       - name: Build Docker Image
         working-directory: ./api
         run: |
-          IMAGE_TAG=CoDevAPI${{ steps.get-pr.outputs.pr-title }}
+          IMAGE_TAG=${{ steps.get-pr.outputs.pr-title }}
           docker build -t ghcr.io/${{ github.repository_owner }}/co-development-task:${IMAGE_TAG} .
           docker tag ghcr.io/${{ github.repository_owner }}/co-development-task:${IMAGE_TAG} ghcr.io/${{ github.repository_owner }}/co-development-task:latest
 
