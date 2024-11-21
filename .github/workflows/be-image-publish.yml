@@ -41,5 +41,5 @@ jobs:
           IMAGE_TAG=${{ github.event.release.tag_name }}-be
           
           # Push the Docker image with both the release tag and the latest tag
-          docker push ghcr.io/wsb-cw8/co-development-task:${IMAGE_TAG}
-          docker push ghcr.io/wsb-cw8/co-development-task:latest
+          docker push ghcr.io/wsb-cw8/co-development-task-be:${IMAGE_TAG}
+          docker push ghcr.io/wsb-cw8/co-development-task-be:latest
