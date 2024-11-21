@@ -11,7 +11,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up SSH
+      - name: Set up SSH tunnel
         uses: appleboy/ssh-action@v0.1.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -20,7 +20,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             # Forward port 6443 (Kubernetes API) to localhost on the GitHub runner
-            ssh -L 6443:localhost:6443 -N &
+            nohup ssh -o StrictHostKeyChecking=no -L 6443:localhost:6443 -N &
 
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v1
