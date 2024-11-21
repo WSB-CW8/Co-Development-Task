@@ -32,7 +32,7 @@ jobs:
             echo "Using image tag: ${IMAGE_TAG}"
 
             # Update the ConfigMap with the latest tag
-            kubectl -n default set env configmap/env IMAGE_TAG=${IMAGE_TAG}
+            kubectl -n default patch configmap env --type merge -p '{"data":{"image-tag":"'"${IMAGE_TAG}"'"}}'
             if [ $? -ne 0 ]; then
               echo "Failed to update the ConfigMap"
               exit 1
