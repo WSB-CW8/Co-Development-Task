@@ -1,4 +1,4 @@
-name: Update ConfigMap and Deploy
+name: BE Update ConfigMap and Deploy
 
 on:
   workflow_dispatch:
@@ -19,14 +19,28 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            set -e  # Exit immediately if a command exits with a non-zero status
+
             echo "Running kubectl commands on remote server..."
 
             # Get the latest release tag from GitHub
             IMAGE_TAG=$(curl -s https://api.github.com/repos/wsb-cw8/co-Development-Task/releases/latest | jq -r .tag_name)
+            if [ -z "$IMAGE_TAG" ]; then
+              echo "Failed to retrieve the image tag"
+              exit 1
+            fi
             echo "Using image tag: ${IMAGE_TAG}"
 
             # Update the ConfigMap with the latest tag
             kubectl -n default set env configmap/env IMAGE_TAG=${IMAGE_TAG}
+            if [ $? -ne 0 ]; then
+              echo "Failed to update the ConfigMap"
+              exit 1
+            fi
 
             # Restart the deployment to apply changes
             kubectl rollout restart deployment/co-dev-task -n default
+            if [ $? -ne 0 ]; then
+              echo "Failed to restart the deployment"
+              exit 1
+            fi
