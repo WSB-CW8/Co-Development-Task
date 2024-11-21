@@ -19,7 +19,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             # Forward port 6443 (Kubernetes API) to localhost on the GitHub runner
-            ssh -o StrictHostKeyChecking=no -L 6443:localhost:6443 ${SSH_USERNAME}@${SSH_HOST} -N
+            ssh -v -o StrictHostKeyChecking=no -L 6443:localhost:6443 ${SSH_USERNAME}@${SSH_HOST} -N
 
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v1
