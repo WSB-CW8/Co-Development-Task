@@ -1,9 +1,13 @@
 name: BE Validate Docker Build and Test Endpoint
 
 on:
+
   pull_request:
     branches:
       - "*"
+  push:
+    branches:
+      - main
 
 jobs:
   docker-build-and-test:
