@@ -1,4 +1,4 @@
-name: Validate Docker Build and Test Endpoint
+name: BE Validate Docker Build and Test Endpoint
 
 on:
   pull_request:
