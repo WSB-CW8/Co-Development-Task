@@ -14,10 +14,10 @@ jobs:
       - name: Set up SSH
         uses: appleboy/ssh-action@v0.1.0
         with:
-          host: ${{secrets.SSH_HOST}}
-          username: ${{secrets.SSH_USERNAME}}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{secrets.SSH_PORT}}
+          port: ${{ secrets.SSH_PORT }}
           command: |
             # Forward port 6443 (Kubernetes API) to localhost on the GitHub runner
             nohup ssh -L 6443:localhost:6443 -N &
@@ -27,15 +27,20 @@ jobs:
         with:
           kubectl-version: 'v1.31.2'
 
-      - name: Configure kubectl
+      - name: Configure kubectl with Kubeconfig
         run: |
-          # Create kubeconfig to access the local cluster via forwarded port
           mkdir -p $HOME/.kube
+          
+          # Check if Kubernetes API server is accessible via SSH tunnel
+          curl --silent --fail https://localhost:6443/version || exit 1  # Check if the API is up
+
+          # Create kubeconfig with the correct API server endpoint
           echo "
           apiVersion: v1
           clusters:
             - cluster:
                 server: https://localhost:6443
+                certificate-authority-data: ${CERTIFICATE_AUTHORITY_DATA}
               name: local-cluster
           contexts:
             - context:
@@ -46,18 +51,23 @@ jobs:
           users:
             - name: kubernetes-admin
               user:
-                client-certificate-data: <certificate_data>
-                client-key-data: <key_data>
+                client-certificate-data: ${CLIENT_CERTIFICATE_DATA}
+                client-key-data: ${CLIENT_KEY_DATA}
           " > $HOME/.kube/config
+
+          # Ensure the kubeconfig works
+          kubectl cluster-info
 
       - name: Update ConfigMap with Latest Tag
         run: |
           # Get the latest release tag from GitHub
           IMAGE_TAG=$(curl -s https://api.github.com/repos/wsb-cw8/co-Development-Task/releases/latest | jq -r .tag_name)
           
-          # Update the Kubernetes ConfigMap
+          # Update the Kubernetes ConfigMap with the new IMAGE_TAG
           kubectl -n default set env configmap/env IMAGE_TAG=${IMAGE_TAG}
 
       - name: Rollout the Deployment
         run: |
+          # Restart the deployment to apply the new environment variable
           kubectl rollout restart deployment/co-dev-task -n default
+
