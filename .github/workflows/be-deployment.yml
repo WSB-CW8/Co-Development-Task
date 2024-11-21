@@ -28,41 +28,6 @@ jobs:
         with:
           version: 'v1.31.0'
 
-      - name: Wait for SSH tunnel to establish
-        run: |
-          sleep 5  # Wait for the SSH tunnel to establish
-
-      - name: Check if kubeconfig exists and configure kubectl
-        run: |
-          if [ ! -f "$HOME/.kube/config" ]; then
-            # If kubeconfig does not exist, create it
-            mkdir -p $HOME/.kube
-            echo "
-            apiVersion: v1
-            clusters:
-              - cluster:
-                  server: https://localhost:6443
-                  certificate-authority-data: ${CERTIFICATE_AUTHORITY_DATA}
-                name: local-cluster
-            contexts:
-              - context:
-                  cluster: local-cluster
-                  user: kubernetes-admin
-                name: local-context
-            current-context: local-context
-            users:
-              - name: kubernetes-admin
-                user:
-                  client-certificate-data: ${CLIENT_CERTIFICATE_DATA}
-                  client-key-data: ${CLIENT_KEY_DATA}
-            " > $HOME/.kube/config
-          else
-            echo "Kubeconfig already exists, skipping creation."
-          fi
-
-          # Ensure the kubeconfig works
-          kubectl cluster-info
-
       - name: Update ConfigMap with Latest Tag
         run: |
           # Get the latest release tag from GitHub
