@@ -32,8 +32,8 @@ jobs:
           IMAGE_TAG=${{ github.event.release.tag_name }}-be
           
           # Build the Docker image and tag it with the release tag
-          docker build -t ghcr.io/wsb-cw8/co-development-task:${IMAGE_TAG} .
-          docker tag ghcr.io/wsb-cw8/co-development-task:${IMAGE_TAG} ghcr.io/wsb-cw8/co-development-task:latest
+          docker build -t ghcr.io/wsb-cw8/co-development-task-be:${IMAGE_TAG} .
+          docker tag ghcr.io/wsb-cw8/co-development-task-be:${IMAGE_TAG} ghcr.io/wsb-cw8/co-development-task:latest
 
       - name: Push Docker Image
         working-directory: ./api
