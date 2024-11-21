@@ -41,10 +41,6 @@ class FilterBusesByLineSelected implements Filter<BusData> {
       return data;
     }
 
-    if (this.selectedLine === "") {
-      return data;
-    }
-
     return data.filter((bus) => bus.lines === this.selectedLine);
   }
 }
