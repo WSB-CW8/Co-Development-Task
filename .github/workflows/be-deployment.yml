@@ -1,7 +1,13 @@
-name: Update ConfigMap and Deploy
+name: BE Update ConfigMap and Deploy
 
 on:
-  workflow_dispatch:  # Allows manual triggering of the workflow
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to deploy'
+        required: true
+        default: 'latest'  # You can set the default tag here
+
 jobs:
   update-configmap:
     runs-on: ubuntu-latest
@@ -10,7 +16,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up SSH tunnel
+      - name: Get Release Tag from Trigger
+        id: get-release-tag
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            # When triggered by a release, use the release tag
+            echo "Release tag detected: ${{ github.event.release.tag_name }}"
+            echo "RELEASE_TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            # When triggered manually, use the input tag
+            echo "Manual trigger detected. Using input tag: ${{ github.event.inputs.release_tag }}"
+            echo "RELEASE_TAG=${{ github.event.inputs.release_tag }}" >> $GITHUB_ENV
+          fi
+
+      - name: Execute Kubernetes Commands via SSH
         uses: appleboy/ssh-action@v0.1.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -18,24 +37,28 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/ssh_key
-            chmod 600 /tmp/ssh_key
+            set -e  # Exit immediately if a command exits with a non-zero status
 
-            # Establish the SSH tunnel for port forwarding
-            ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key -L 6444:localhost:6443 ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} -p${{secrets.SSH_PORT}} -N -f
-      - name: Set up Kubernetes CLI
-        uses: azure/setup-kubectl@v1
-        with:
-          version: 'v1.31.0'
+            echo "Running kubectl commands on remote server..."
 
-      - name: Update ConfigMap with Latest Tag
-        run: |
-          # Get the latest release tag from GitHub
-          IMAGE_TAG=$(curl -s https://api.github.com/repos/wsb-cw8/co-Development-Task/releases/latest | jq -r .tag_name)
-          
-          # Update the Kubernetes ConfigMap
-          kubectl -n default set env configmap/env IMAGE_TAG=${IMAGE_TAG}
+            # Use the RELEASE_TAG environment variable
+            IMAGE_TAG=${{ env.RELEASE_TAG }}
+            if [ -z "$IMAGE_TAG" ]; then
+              echo "Failed to retrieve the image tag"
+              exit 1
+            fi
+            echo "Using image tag: ${IMAGE_TAG}"
 
-      - name: Rollout the Deployment
-        run: |
-          kubectl rollout restart deployment/co-dev-task -n default
+            # Update the ConfigMap with the latest tag
+            kubectl -n default patch configmap env --type merge -p '{"data":{"image-tag":"'"${IMAGE_TAG}"'"}}'
+            if [ $? -ne 0 ]; then
+              echo "Failed to update the ConfigMap"
+              exit 1
+            fi
+
+            # Restart the deployment to apply changes
+            kubectl rollout restart deployment/co-dev-task -n default
+            if [ $? -ne 0 ]; then
+              echo "Failed to restart the deployment"
+              exit 1
+            fi
