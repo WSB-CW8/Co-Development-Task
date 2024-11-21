@@ -1,7 +1,8 @@
 name: Update ConfigMap and Deploy
 
 on:
-  workflow_dispatch:  # Allows manual triggering of the workflow
+  workflow_dispatch:
+
 jobs:
   update-configmap:
     runs-on: ubuntu-latest
@@ -18,22 +19,21 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/ssh_key
-            chmod 600 /tmp/ssh_key
+            ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key -L 6444:localhost:6443 ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} -p${{ secrets.SSH_PORT }} -N -f
+            echo "SSH Tunnel established"
 
-            # Establish the SSH tunnel for port forwarding
-            ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key -L 6444:localhost:6443 ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} -p${{secrets.SSH_PORT}} -N -f
-      - name: Set up Kubernetes CLI
-        uses: azure/setup-kubectl@v1
-        with:
-          version: 'v1.31.0'
+      - name: Configure kubeconfig
+        run: |
+          kubectl config set-cluster kubernetes --server=https://localhost:6444
+          kubectl config set-context kubernetes-admin@kubernetes --cluster=kubernetes --user=kubernetes-admin
+          kubectl config use-context kubernetes-admin@kubernetes
+
+      - name: Test Kubernetes Connection
+        run: kubectl cluster-info
 
       - name: Update ConfigMap with Latest Tag
         run: |
-          # Get the latest release tag from GitHub
           IMAGE_TAG=$(curl -s https://api.github.com/repos/wsb-cw8/co-Development-Task/releases/latest | jq -r .tag_name)
-          
-          # Update the Kubernetes ConfigMap
           kubectl -n default set env configmap/env IMAGE_TAG=${IMAGE_TAG}
 
       - name: Rollout the Deployment
