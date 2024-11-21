@@ -1,0 +1,32 @@
+name: Validate PR Title
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate-pr-title:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Retrieve Pull Request Metadata
+        id: get-pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            const prTitle = pr.data.title;
+            const regex = /^v\d+\.\d+\.\d+$/;  // Regex for the version format v{major}.{minor}.{patch}
+            if (!regex.test(prTitle)) {
+              core.setFailed(`Invalid PR title. The title must follow the pattern: v{major}.{minor}.{patch}, e.g., v1.2.3. Current title: ${prTitle}`);
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

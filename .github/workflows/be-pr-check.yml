@@ -1,0 +1,48 @@
+name: Validate Docker Build and Test Endpoint
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  docker-build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Image
+        working-directory: ./api
+        run: |
+          docker build -f Dockerfile -t pr-docker-validation:temp .
+
+      - name: Run Docker Container
+        working-directory: ./api
+        run: |
+          docker run -d --name pr-docker-test -p 8080:8080 -e API_KEY=placeholder pr-docker-validation:temp
+        continue-on-error: false
+
+      - name: Wait for Service to Start
+        working-directory: ./api
+        run: |
+          for i in {1..10}; do
+            if curl -s http://localhost:8080/test | grep -q "Hello World!"; then
+              echo "Service is up and returned the expected response."
+              exit 0
+            fi
+            echo "Waiting for service to be ready..."
+            sleep 2
+          done
+          echo "Service did not start or returned an unexpected response."
+          exit 1
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker stop pr-docker-test || true
+          docker rm pr-docker-test || true

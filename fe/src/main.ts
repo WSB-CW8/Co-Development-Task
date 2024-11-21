@@ -35,5 +35,7 @@ const mapCore = new MapCore(eventBus, {
   ],
 });
 
+
 // Initialize Plugins
 mapCore.initializePlugins();
+
