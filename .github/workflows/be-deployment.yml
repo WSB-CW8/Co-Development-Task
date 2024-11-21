@@ -55,7 +55,6 @@ jobs:
         run: |
           kubectl rollout restart deployment/co-dev-task -n default
 
-    post:
       - name: Clean Up SSH Tunnel
         if: always()
         run: |
