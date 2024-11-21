@@ -80,6 +80,8 @@ class MapPlugin implements Plugin {
     }
 
     data.forEach((markerData) => {
+      // DO NOT TOUCH THIS PART, WE HAVE NO ID TO IDENTIFY THE MARKER
+      const vehiclenumber = markerData.description.split("<br />")[1];
       const marker = this.layers[layer]
         .getLayers()
         .find((layer) =>
@@ -87,9 +89,10 @@ class MapPlugin implements Plugin {
             .getPopup()
             ?.getContent()
             ?.toString()
-            .includes(markerData.description)
+            .includes(vehiclenumber)
         ) as L.Marker | undefined;
 
+      console.log("marker", marker);
       if (marker) {
         const startLatLng = marker.getLatLng();
         const endLatLng = L.latLng([markerData.lat, markerData.lng]);
