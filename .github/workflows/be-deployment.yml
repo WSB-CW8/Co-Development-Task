@@ -56,7 +56,7 @@ jobs:
           IMAGE_TAG=$(curl -s https://api.github.com/repos/wsb-cw8/co-Development-Task/releases/latest | jq -r .tag_name)
           
           # Update the Kubernetes ConfigMap
-          kubectl -n <namespace> set env configmap/env IMAGE_TAG=${IMAGE_TAG}
+          kubectl -n default set env configmap/env IMAGE_TAG=${IMAGE_TAG}
 
       - name: Rollout the Deployment
         run: |
