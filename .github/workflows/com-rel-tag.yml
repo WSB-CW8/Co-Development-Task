@@ -1,0 +1,39 @@
+name: Validate and Tag Release
+
+on:
+  release:
+    types:
+      - created  # Trigger when a release is created
+
+jobs:
+  validate-and-tag-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Retrieve Release Metadata
+        id: get-release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const release = await github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: context.payload.release.tag_name
+            });
+            const releaseName = release.data.name;
+            const regex = /^v\d+\.\d+\.\d+$/;  // Regex for the version format v{major}.{minor}.{patch}
+            if (!regex.test(releaseName)) {
+              core.setFailed(`Invalid release name. The name must follow the pattern: v{major}.{minor}.{patch}, e.g., v1.2.3. Current name: ${releaseName}`);
+            }
+            core.setOutput("release-name", releaseName);
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Git Tag
+        run: |
+          RELEASE_NAME=${{ steps.get-release.outputs.release-name }}
+          git tag -a ${RELEASE_NAME} -m "Release ${RELEASE_NAME}"
+          git push origin ${RELEASE_NAME}
