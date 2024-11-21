@@ -22,7 +22,7 @@ jobs:
             chmod 600 /tmp/ssh_key
 
             # Establish the SSH tunnel for port forwarding
-            ssh -v -o StrictHostKeyChecking=no -i /tmp/ssh_key -L 6443:localhost:6443 ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} -p${{secrets.SSH_PORT}} -N
+            ssh -v -o StrictHostKeyChecking=no -i /tmp/ssh_key -L 6444:localhost:6443 ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} -p${{secrets.SSH_PORT}} -N
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v1
         with:
