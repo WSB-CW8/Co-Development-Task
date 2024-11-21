@@ -20,20 +20,21 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           command: |
             # Forward port 6443 (Kubernetes API) to localhost on the GitHub runner
-            nohup ssh -L 6443:localhost:6443 -N &
+            ssh -L 6443:localhost:6443 -N &
 
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v1
         with:
           kubectl-version: 'v1.31.2'
 
+      - name: Wait for SSH tunnel to establish
+        run: |
+          sleep 5  # Wait for the SSH tunnel to establish
+
       - name: Configure kubectl with Kubeconfig
         run: |
           mkdir -p $HOME/.kube
           
-          # Check if Kubernetes API server is accessible via SSH tunnel
-          curl --silent --fail https://localhost:6443/version || exit 1  # Check if the API is up
-
           # Create kubeconfig with the correct API server endpoint
           echo "
           apiVersion: v1
@@ -63,11 +64,9 @@ jobs:
           # Get the latest release tag from GitHub
           IMAGE_TAG=$(curl -s https://api.github.com/repos/wsb-cw8/co-Development-Task/releases/latest | jq -r .tag_name)
           
-          # Update the Kubernetes ConfigMap with the new IMAGE_TAG
+          # Update the Kubernetes ConfigMap
           kubectl -n default set env configmap/env IMAGE_TAG=${IMAGE_TAG}
 
       - name: Rollout the Deployment
         run: |
-          # Restart the deployment to apply the new environment variable
           kubectl rollout restart deployment/co-dev-task -n default
-
