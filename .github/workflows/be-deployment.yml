@@ -2,7 +2,6 @@ name: Update ConfigMap and Deploy
 
 on:
   workflow_dispatch:  # Allows manual triggering of the workflow
-
 jobs:
   update-configmap:
     runs-on: ubuntu-latest
@@ -20,7 +19,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             # Forward port 6443 (Kubernetes API) to localhost on the GitHub runner
-            nohup ssh -o StrictHostKeyChecking=no -L 6443:localhost:6443 -N &
+            ssh -o StrictHostKeyChecking=no -L 6443:localhost:6443 ${SSH_USERNAME}@${SSH_HOST} -N
 
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v1
