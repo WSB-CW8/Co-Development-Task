@@ -7,3 +7,7 @@ export type BusData = {
   time: string;
   brigade: string;
 };
+
+export interface Filter<T> {
+  filter: (data: T[]) => T[];
+}

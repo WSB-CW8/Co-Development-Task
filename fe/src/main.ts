@@ -1,39 +1,39 @@
 import "./style.css";
 import "leaflet/dist/leaflet.css";
 
-import { Core } from "./core/core";
-import { eventBus } from "./core/eventBus/EventBus";
-import { MapPlugin } from "./core/managers/MapPlugin";
-import { UIPlugin } from "./core/managers/UIPlugin";
-import { BusPlugin } from "./core/managers/BusPlugin";
-import { PeriodicEmitterPlugin } from "./core/managers/PeriodicEmitterPlugin";
-import { events } from "./core/eventBus/events";
+import { MapCore } from "./MapCore";
+import { eventBus } from "./MapCore/eventBus/EventBus";
+import { MapPlugin } from "./MapCore/Plugins/MapPlugin";
+import { BusPlugin, events } from "./MapCore/Plugins/Buses/BusPlugin";
+import { PeriodicEmitterPlugin } from "./MapCore/Plugins/PeriodicEmitterPlugin";
 
-// Main App Initialization
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-    <h1>Bus Tracker</h1>
-    <div id="map"></div>
-`;
+import { FilterBusesByLineSelected } from "./MapCore/Plugins/Buses/Filters/FilterByLine";
 
-// Create Core
-const core = new Core(eventBus);
+// Create more if needed.
+const PeriodicBusFetcher = PeriodicEmitterPlugin;
 
-// Instantiate Plugins
-const mapPlugin = new MapPlugin(eventBus, "map", [52.259788, 21.040546], 13);
-const uiPlugin = new UIPlugin(eventBus);
-const busPlugin = new BusPlugin(eventBus);
-const refreshBusDataPlugin = new PeriodicEmitterPlugin(
-  eventBus,
-  events.busDataFetchNewData,
-  0,
-  10000
-);
-
-// Register Plugins
-core.registerPlugin(mapPlugin);
-core.registerPlugin(uiPlugin);
-core.registerPlugin(busPlugin);
-core.registerPlugin(refreshBusDataPlugin);
+const mapCore = new MapCore(eventBus, {
+  plugins: [
+    new MapPlugin(eventBus, {
+      containerId: "map",
+      center: [52.259788, 21.040546],
+      zoom: 13,
+    }),
+    new BusPlugin(eventBus, {
+      path: "/buses",
+      filters: [
+        new FilterBusesByLineSelected(eventBus, {
+          selectElementId: "bus-lines-filter",
+        }),
+      ],
+    }),
+    new PeriodicBusFetcher(eventBus, {
+      eventName: events.busDataFetchNewData,
+      intervalId: 0,
+      fetchInterval: 10000,
+    }),
+  ],
+});
 
 // Initialize Plugins
-core.initializePlugins();
+mapCore.initializePlugins();
