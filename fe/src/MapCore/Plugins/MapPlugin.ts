@@ -92,7 +92,7 @@ class MapPlugin implements Plugin {
             .includes(vehiclenumber)
         ) as L.Marker | undefined;
 
-      console.log("marker", marker);
+//      console.log("marker", marker);
       if (marker) {
         const startLatLng = marker.getLatLng();
         const endLatLng = L.latLng([markerData.lat, markerData.lng]);
