@@ -1,32 +1,41 @@
 import "./style.css";
 import "leaflet/dist/leaflet.css";
 
-import { eventBus } from "./core/eventBus/EventBus";
-import { MapManager } from "./core/managers/MapManager";
-import { UIManager } from "./core/managers/UIManager";
-import { BusManager } from "./core/managers/BusManager";
+import { MapCore } from "./MapCore";
+import { eventBus } from "./MapCore/eventBus/EventBus";
+import { MapPlugin } from "./MapCore/Plugins/MapPlugin";
+import { BusPlugin, events } from "./MapCore/Plugins/Buses/BusPlugin";
+import { PeriodicEmitterPlugin } from "./MapCore/Plugins/PeriodicEmitterPlugin";
 
-// Managers
+import { FilterBusesByLineSelected } from "./MapCore/Plugins/Buses/Filters/FilterByLine";
 
-// Main App Initialization
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-    <h1>Bus Tracker</h1>
-    <div id="map"></div>
-`;
+// Create more if needed.
+const PeriodicBusFetcher = PeriodicEmitterPlugin;
 
-new MapManager(eventBus, "map", [52.259788, 21.040546], 13);
-const busManager = new BusManager(eventBus);
-const uiManager = new UIManager(eventBus);
+const mapCore = new MapCore(eventBus, {
+  plugins: [
+    new MapPlugin(eventBus, {
+      containerId: "map",
+      center: [52.259788, 21.040546],
+      zoom: 13,
+    }),
+    new BusPlugin(eventBus, {
+      path: "/buses",
+      filters: [
+        new FilterBusesByLineSelected(eventBus, {
+          selectElementId: "bus-lines-filter",
+        }),
+      ],
+    }),
+    new PeriodicBusFetcher(eventBus, {
+      eventName: events.busDataFetchNewData,
+      intervalId: 0,
+      fetchInterval: 10000,
+    }),
+  ],
+});
 
-const apiUrl = import.meta.env.VITE_API_URL;
 
-busManager
-    .fetchBuses(apiUrl, uiManager.getFilterSelectValue())
-    .then(() => console.log("Buses fetched and rendered."));
+// Initialize Plugins
+mapCore.initializePlugins();
 
-// Initial Data Fetch
-setInterval(() => {
-  busManager
-      .fetchBuses(apiUrl, uiManager.getFilterSelectValue())
-      .then(() => console.log("Buses fetched and rendered."));
-}, 10000);

@@ -1,0 +1,64 @@
+name: BE Update ConfigMap and Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Release tag to deploy"
+        required: true
+        default: "latest" # You can set the default tag here
+
+jobs:
+  update-configmap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get Release Tag from Trigger
+        id: get-release-tag
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            # When triggered by a release, use the release tag
+            echo "Release tag detected: ${{ github.event.release.tag_name }}"
+            echo "RELEASE_TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            # When triggered manually, use the input tag
+            echo "Manual trigger detected. Using input tag: ${{ github.event.inputs.release_tag }}"
+            echo "RELEASE_TAG=${{ github.event.inputs.release_tag }}" >> $GITHUB_ENV
+          fi
+
+      - name: Execute Kubernetes Commands via SSH
+        uses: appleboy/ssh-action@v0.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -e  # Exit immediately if a command exits with a non-zero status
+
+            echo "Running kubectl commands on remote server..."
+
+            # Use the RELEASE_TAG environment variable
+            IMAGE_TAG=${{ env.RELEASE_TAG }}-fe
+            if [ -z "$IMAGE_TAG" ]; then
+              echo "Failed to retrieve the image tag"
+              exit 1
+            fi
+            echo "Using image tag: ${IMAGE_TAG}"
+
+            # Update the ConfigMap with the latest tag
+            kubectl -n default patch configmap env --type merge -p '{"data":{"image-tag":"'"${IMAGE_TAG}"'"}}'
+            if [ $? -ne 0 ]; then
+              echo "Failed to update the ConfigMap"
+              exit 1
+            fi
+
+            # Restart the deployment to apply changes
+            kubectl rollout restart deployment/co-dev-task -n default
+            if [ $? -ne 0 ]; then
+              echo "Failed to restart the deployment"
+              exit 1
+            fi

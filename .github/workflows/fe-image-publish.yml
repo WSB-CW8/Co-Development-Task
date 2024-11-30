@@ -3,7 +3,7 @@ name: FE Build and Push Docker Image
 on:
   release:
     types:
-      - created  # Trigger on release creation
+      - created # Trigger on release creation
 
 jobs:
   build-and-push:
@@ -31,14 +31,14 @@ jobs:
           # Use the release tag directly
           IMAGE_TAG=${{ github.event.release.tag_name }}-fe          
           # Build and tag the Docker image with the release tag and latest tag
-          docker build -t ghcr.io/wsb-cw8/co-development-task-fe:${IMAGE_TAG} .
+          docker build --build-arg VITE_API_URL=${{ secrets.API_URL }} -t ghcr.io/wsb-cw8/co-development-task-fe:${IMAGE_TAG} .
           docker tag ghcr.io/wsb-cw8/co-development-task-fe:${IMAGE_TAG} ghcr.io/wsb-cw8/co-development-task-fe:latest
 
       - name: Push Docker Image
         working-directory: ./fe
         run: |
           IMAGE_TAG=${{ github.event.release.tag_name }}-fe
-          
+
           # Push both the release tag and latest tag to the container registry
           docker push ghcr.io/wsb-cw8/co-development-task-fe:${IMAGE_TAG}
           docker push ghcr.io/wsb-cw8/co-development-task-fe:latest
