@@ -13,6 +13,12 @@ RUN npm install
 # Copy the entire application code to the container
 COPY . .
 
+# Accept build argument for VITE_API_URL
+ARG API_URL
+
+# Create .env file with VITE_API_URL
+RUN echo "VITE_API_URL=$API_URL" > .env
+
 # Build the React app for production
 RUN npm run build
 
