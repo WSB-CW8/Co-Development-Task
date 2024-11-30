@@ -42,7 +42,7 @@ class BusPlugin implements Plugin {
   }
 
   async fetchData(initialFetch?: boolean): Promise<void> {
-    const apiUrl = import.meta.env.VITE_API_URL;
+    const apiUrl = import.meta.env.VITE_API_URL + "/buses";
     try {
       const response = await fetch(apiUrl + this.options.path);
       if (!response.ok) {
