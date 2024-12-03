@@ -39,12 +39,10 @@ Preferred version of SDK is **semeru-17**
 1. To get it done, we have to, once again, go to **Module Settings**, by <u>right-clicking</u> on our newly changed **root project folder** and choosing **Open Module Settings**.
 2. Similarly to what was mentioned above, make sure you're in **Dependencies** tab, inside the **Modules** section, in **the navigator <u>on the left side</u> of the window**.
 3. Then in **Module SDK** combo box choose **semeru-17** if it's available. If not, follow the steps below:
-    <ol type="1">
-    <li>Select <b>Download JDK...</b></li>
-    <li>Once a new window pops up, in <b>Version</b> box select <b>17</b>, then in <b>Vendor</b> box choose <b>IBM Semeru</b>.</li>
-    <li>Confirm with <b>Download</b></li>
-    <li>Once that's done, the downloaded version of SDK should appear in <b>Module SDK</b> list, ready to be selected.</li>
-    </ol>
+    1. Select <b>Download JDK...</b>
+    2. Once a new window pops up, in <b>Version</b> box select <b>17</b>, then in <b>Vendor</b> box choose <b>IBM Semeru</b>.
+    3. Confirm with <b>Download</b>
+    4. Once that's done, the downloaded version of SDK should appear in <b>Module SDK</b> list, ready to be selected.
 4. You can now **Apply** changes and move onto the next step.
 ### Set up installed Java SDK for the project
 1. While having **Module Settings** window still opened, make sure you're in the **Project** section.
