@@ -4,7 +4,7 @@
 ### You can clone this project to your device by pasting in the line below into the terminal:
 
 ```bash
-git clone https://github.com/WSB-CW8/Co-Development-Task.git
+git clone git@github.com:WSB-CW8/Co-Development-Task.git
 ```
 
 
