@@ -21,7 +21,7 @@ git clone git@github.com:WSB-CW8/Co-Development-Task.git
 3. Paste the repository address from the line below into the **URL** entry.
 
     ```
-    https://github.com/WSB-CW8/Co-Development-Task.git
+    git@github.com:WSB-CW8/Co-Development-Task.git
     ```
 4. Choose the folder you want to keep the project in and confirm with **Clone**.
 
