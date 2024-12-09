@@ -32,6 +32,7 @@ git clone git@github.com:WSB-CW8/Co-Development-Task.git
 4. Now that it's removed, choose **Add Content Root** and select the folder inside the previous root folder. Either **api**, if you're focused on the backend of the application, or **fe**, if you want to take a look at its frontend.
 5. Confirm with **Apply** and **OK**.
 
+### _API only_
 ### Install and set up Java SDK dependency
 > To run the backend, you'll need Java SDK.
 Preferred version of SDK is **semeru-17**
@@ -48,22 +49,42 @@ Preferred version of SDK is **semeru-17**
 1. While having **Module Settings** window still opened, make sure you're in the **Project** section.
 2. From the **SDK** list, select the same SDK you've selected, during the previous step of the setup.
 3. Click **Apply** to keep the changes and close the window with **OK**.
-### _API only_ - Link Gradle Project
+
+### Link Gradle Project
 1. Make sure the **src** folder is unwrapped and the **settings.gradle** file is visible
 2. Click with <u>right mouse button</u> on **settings.gradle** file and select **Link Gradle Project**.
 3. Once the **Gradle** panel shows up on the <u>right side</u> of the window, click on **api** entry unless it's already selected. Then from that panel, select **Download Sources** (<i>4th icon from the left</i>) and wait for dependencies to be downloaded. If you encounter errors during this step, [check the steps above](#install-and-set-up-java-sdk-dependency), involving **Module Settings**.
 
 ## Build and run
-### Make sure either Docker container server or Docker Desktop app is currently running
-### Build the project application into Docker container
+> Before building containers for frontend or backend, make sure either Docker container server or Docker Desktop app is currently running.
+
+### _API:_
+### Build using Docker Compose
 ```bash
 docker compose build
 ```
 
-### Run application container
+### Run backend container using Docker Compose
 
 ```bash
 docker compose up
 ```
+### _Frontend:_
+### Build using Docker
+You may want to replace "localhost:8080" with your API address and port of choice, but make sure there is no slash at the end.
+Container name can also be changed to your liking.
+The command below assumes your work directory in **fe**.
+```bash
+docker build -t fe:devel --build-arg API_URL=http://localhost:8080 .
+```
+
+### Run frontend container
+
+Replace container name with the one you used for the build in the previous step.
+You can also change the port for your host machine.
+```bash
+docker run -p 80:80 fe:devel
+```
 
 # You're good to go! ;)
+> At this point you should be able to connect to the built web application
