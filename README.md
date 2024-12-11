@@ -73,7 +73,7 @@ docker compose up
 ### Build using Docker
 You may want to replace "localhost:8080" with your API address and port of choice, but make sure there is no slash at the end.
 Container name can also be changed to your liking.
-The command below assumes your work directory in **fe**.
+The command below assumes your work directory is **fe**.
 ```bash
 docker build -t fe:devel --build-arg API_URL=http://localhost:8080 .
 ```
