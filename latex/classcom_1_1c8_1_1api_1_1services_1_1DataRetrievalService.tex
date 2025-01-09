@@ -1,0 +1,51 @@
+\doxysection{com.\+c8.\+api.\+services.\+Data\+Retrieval\+Service Class Reference}
+\hypertarget{classcom_1_1c8_1_1api_1_1services_1_1DataRetrievalService}{}\label{classcom_1_1c8_1_1api_1_1services_1_1DataRetrievalService}\index{com.c8.api.services.DataRetrievalService@{com.c8.api.services.DataRetrievalService}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcom_1_1c8_1_1api_1_1services_1_1DataRetrievalService_a79a7eeada6493bbdd1e5473ec932b02b}{Data\+Retrieval\+Service}} (Rest\+Template rest\+Template)
+\item 
+\mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1IncomingData}{Incoming\+Data}} \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1services_1_1DataRetrievalService_a92ae525a4375c1098e1a69942d75ff8e}{fetch\+Data}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Service for retrieving bus and tram data from an external API.
+
+This service fetches real-\/time data about buses and trams in Warsaw, Poland, from the specified public API endpoint. The data is returned as a parsed {\ttfamily \doxylink{}{Incoming\+Data}} object. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcom_1_1c8_1_1api_1_1services_1_1DataRetrievalService_a79a7eeada6493bbdd1e5473ec932b02b}\index{com.c8.api.services.DataRetrievalService@{com.c8.api.services.DataRetrievalService}!DataRetrievalService@{DataRetrievalService}}
+\index{DataRetrievalService@{DataRetrievalService}!com.c8.api.services.DataRetrievalService@{com.c8.api.services.DataRetrievalService}}
+\doxysubsubsection{\texorpdfstring{DataRetrievalService()}{DataRetrievalService()}}
+{\footnotesize\ttfamily \label{classcom_1_1c8_1_1api_1_1services_1_1DataRetrievalService_a79a7eeada6493bbdd1e5473ec932b02b} 
+com.\+c8.\+api.\+services.\+Data\+Retrieval\+Service.\+Data\+Retrieval\+Service (\begin{DoxyParamCaption}\item[{Rest\+Template}]{rest\+Template}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructs a new {\ttfamily \doxylink{classcom_1_1c8_1_1api_1_1services_1_1DataRetrievalService}{Data\+Retrieval\+Service}} instance.
+
+
+\begin{DoxyParams}{Parameters}
+{\em rest\+Template} & The {\ttfamily \doxylink{}{Rest\+Template}} to be used for making HTTP requests. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1c8_1_1api_1_1services_1_1DataRetrievalService_a92ae525a4375c1098e1a69942d75ff8e}\index{com.c8.api.services.DataRetrievalService@{com.c8.api.services.DataRetrievalService}!fetchData@{fetchData}}
+\index{fetchData@{fetchData}!com.c8.api.services.DataRetrievalService@{com.c8.api.services.DataRetrievalService}}
+\doxysubsubsection{\texorpdfstring{fetchData()}{fetchData()}}
+{\footnotesize\ttfamily \label{classcom_1_1c8_1_1api_1_1services_1_1DataRetrievalService_a92ae525a4375c1098e1a69942d75ff8e} 
+\mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1IncomingData}{Incoming\+Data}} com.\+c8.\+api.\+services.\+Data\+Retrieval\+Service.\+fetch\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Fetches bus and tram data from the external API.
+
+Sends a GET request to the external API endpoint to retrieve the latest bus and tram location data. The response is parsed into an {\ttfamily \doxylink{}{Incoming\+Data}} object.
+
+\begin{DoxyReturn}{Returns}
+An instance of {\ttfamily \doxylink{}{Incoming\+Data}} containing the bus and tram location data, or {\ttfamily null} if an error occurs. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+api/src/main/java/com/c8/api/services/Data\+Retrieval\+Service.\+java\end{DoxyCompactItemize}

@@ -1,0 +1,53 @@
+\doxysection{com.\+c8.\+api.\+Api\+Application Class Reference}
+\hypertarget{classcom_1_1c8_1_1api_1_1ApiApplication}{}\label{classcom_1_1c8_1_1api_1_1ApiApplication}\index{com.c8.api.ApiApplication@{com.c8.api.ApiApplication}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Rest\+Template \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1ApiApplication_a25370a2e7ce71eb19e0e6c465b396ba3}{rest\+Template}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1ApiApplication_ac9eae0ab80b05c4ab5fe78ab6633e47f}{main}} (String\mbox{[}$\,$\mbox{]} args)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main class for the Spring Boot API application.
+
+This class is responsible for bootstrapping the application using {\ttfamily \doxylink{}{Spring\+Application}}. It also provides application-\/level beans and configurations. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1c8_1_1api_1_1ApiApplication_ac9eae0ab80b05c4ab5fe78ab6633e47f}\index{com.c8.api.ApiApplication@{com.c8.api.ApiApplication}!main@{main}}
+\index{main@{main}!com.c8.api.ApiApplication@{com.c8.api.ApiApplication}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{classcom_1_1c8_1_1api_1_1ApiApplication_ac9eae0ab80b05c4ab5fe78ab6633e47f} 
+static void com.\+c8.\+api.\+Api\+Application.\+main (\begin{DoxyParamCaption}\item[{String\mbox{[}$\,$\mbox{]}}]{args}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Main method that serves as the entry point of the Spring Boot application.
+
+This method invokes {\ttfamily \doxylink{}{Spring\+Application\#run(\+Class, String\mbox{[}$\,$\mbox{]})}} to launch the application.
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & Command-\/line arguments passed to the application. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classcom_1_1c8_1_1api_1_1ApiApplication_a25370a2e7ce71eb19e0e6c465b396ba3}\index{com.c8.api.ApiApplication@{com.c8.api.ApiApplication}!restTemplate@{restTemplate}}
+\index{restTemplate@{restTemplate}!com.c8.api.ApiApplication@{com.c8.api.ApiApplication}}
+\doxysubsubsection{\texorpdfstring{restTemplate()}{restTemplate()}}
+{\footnotesize\ttfamily \label{classcom_1_1c8_1_1api_1_1ApiApplication_a25370a2e7ce71eb19e0e6c465b396ba3} 
+Rest\+Template com.\+c8.\+api.\+Api\+Application.\+rest\+Template (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Creates a {\ttfamily \doxylink{}{Rest\+Template}} bean for making RESTful HTTP requests.
+
+The {\ttfamily \doxylink{}{Rest\+Template}} is a synchronous client for HTTP communication and can be used for calling external APIs.
+
+\begin{DoxyReturn}{Returns}
+A new {\ttfamily \doxylink{}{Rest\+Template}} instance. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+api/src/main/java/com/c8/api/Api\+Application.\+java\end{DoxyCompactItemize}

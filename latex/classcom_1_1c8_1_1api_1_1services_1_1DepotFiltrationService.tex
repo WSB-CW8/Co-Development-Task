@@ -1,0 +1,56 @@
+\doxysection{com.\+c8.\+api.\+services.\+Depot\+Filtration\+Service Class Reference}
+\hypertarget{classcom_1_1c8_1_1api_1_1services_1_1DepotFiltrationService}{}\label{classcom_1_1c8_1_1api_1_1services_1_1DepotFiltrationService}\index{com.c8.api.services.DepotFiltrationService@{com.c8.api.services.DepotFiltrationService}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+boolean \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1services_1_1DepotFiltrationService_a393d8eacb963b6c527c6623b7d2afcb2}{is\+Bus\+In\+Depot}} (\mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}} bus)
+\item 
+List$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}} $>$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1services_1_1DepotFiltrationService_a204eea07acadc08564926a591415baa5}{remove\+Depoted\+Buses}} (List$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}} $>$ locations)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Service for filtering out buses located within depots.
+
+This service checks whether a bus is located inside any of the predefined depots and provides a method to filter out buses that are inside depots from a list of bus locations. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1c8_1_1api_1_1services_1_1DepotFiltrationService_a393d8eacb963b6c527c6623b7d2afcb2}\index{com.c8.api.services.DepotFiltrationService@{com.c8.api.services.DepotFiltrationService}!isBusInDepot@{isBusInDepot}}
+\index{isBusInDepot@{isBusInDepot}!com.c8.api.services.DepotFiltrationService@{com.c8.api.services.DepotFiltrationService}}
+\doxysubsubsection{\texorpdfstring{isBusInDepot()}{isBusInDepot()}}
+{\footnotesize\ttfamily \label{classcom_1_1c8_1_1api_1_1services_1_1DepotFiltrationService_a393d8eacb963b6c527c6623b7d2afcb2} 
+boolean com.\+c8.\+api.\+services.\+Depot\+Filtration\+Service.\+is\+Bus\+In\+Depot (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}}}]{bus}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Checks if the provided bus is located within any depot\textquotesingle{}s coordinates.
+
+
+\begin{DoxyParams}{Parameters}
+{\em bus} & The {\ttfamily \doxylink{}{Bus\+Location}} object representing the bus to be checked. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the bus is inside a depot, {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+\Hypertarget{classcom_1_1c8_1_1api_1_1services_1_1DepotFiltrationService_a204eea07acadc08564926a591415baa5}\index{com.c8.api.services.DepotFiltrationService@{com.c8.api.services.DepotFiltrationService}!removeDepotedBuses@{removeDepotedBuses}}
+\index{removeDepotedBuses@{removeDepotedBuses}!com.c8.api.services.DepotFiltrationService@{com.c8.api.services.DepotFiltrationService}}
+\doxysubsubsection{\texorpdfstring{removeDepotedBuses()}{removeDepotedBuses()}}
+{\footnotesize\ttfamily \label{classcom_1_1c8_1_1api_1_1services_1_1DepotFiltrationService_a204eea07acadc08564926a591415baa5} 
+List$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}} $>$ com.\+c8.\+api.\+services.\+Depot\+Filtration\+Service.\+remove\+Depoted\+Buses (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}} $>$}]{locations}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Filters out buses that are located within depots from a list of bus locations.
+
+This method removes buses that are inside any depot\textquotesingle{}s area from the provided list.
+
+
+\begin{DoxyParams}{Parameters}
+{\em locations} & A list of {\ttfamily \doxylink{}{Bus\+Location}} objects representing the buses. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A list of {\ttfamily \doxylink{}{Bus\+Location}} objects that are not located in any depot. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+api/src/main/java/com/c8/api/services/Depot\+Filtration\+Service.\+java\end{DoxyCompactItemize}
