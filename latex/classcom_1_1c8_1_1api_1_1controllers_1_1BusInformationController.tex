@@ -1,0 +1,55 @@
+\doxysection{com.\+c8.\+api.\+controllers.\+Bus\+Information\+Controller Class Reference}
+\hypertarget{classcom_1_1c8_1_1api_1_1controllers_1_1BusInformationController}{}\label{classcom_1_1c8_1_1api_1_1controllers_1_1BusInformationController}\index{com.c8.api.controllers.BusInformationController@{com.c8.api.controllers.BusInformationController}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Response\+Entity$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1IncomingData}{Incoming\+Data}} $>$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1controllers_1_1BusInformationController_a66ac3dd94290598b919a483eb1812704}{get\+Bus\+Location}} ( @Request\+Param(required=false) Optional$<$ Integer $>$ max\+Distance, @Request\+Param(required=false) Optional$<$ Double $>$ lat, @Request\+Param(required=false) Optional$<$ Double $>$ lon)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+REST controller for retrieving information about bus locations.
+
+This controller handles requests for fetching bus data, filtering depoted buses, and optionally filtering buses by maximum distance from a given point. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1c8_1_1api_1_1controllers_1_1BusInformationController_a66ac3dd94290598b919a483eb1812704}\index{com.c8.api.controllers.BusInformationController@{com.c8.api.controllers.BusInformationController}!getBusLocation@{getBusLocation}}
+\index{getBusLocation@{getBusLocation}!com.c8.api.controllers.BusInformationController@{com.c8.api.controllers.BusInformationController}}
+\doxysubsubsection{\texorpdfstring{getBusLocation()}{getBusLocation()}}
+{\footnotesize\ttfamily \label{classcom_1_1c8_1_1api_1_1controllers_1_1BusInformationController_a66ac3dd94290598b919a483eb1812704} 
+Response\+Entity$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1IncomingData}{Incoming\+Data}} $>$ com.\+c8.\+api.\+controllers.\+Bus\+Information\+Controller.\+get\+Bus\+Location (\begin{DoxyParamCaption}\item[{@Request\+Param(required=false) Optional$<$ Integer $>$}]{max\+Distance}{, }\item[{@Request\+Param(required=false) Optional$<$ Double $>$}]{lat}{, }\item[{@Request\+Param(required=false) Optional$<$ Double $>$}]{lon}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Retrieves bus locations, optionally filtered by maximum distance from a given point.
+
+This endpoint returns a list of bus locations after filtering out depoted buses. If the {\ttfamily max\+Distance}, {\ttfamily lat}, and {\ttfamily lon} parameters are provided, the list is further filtered by the specified maximum distance from the given latitude and longitude.
+
+{\bfseries{Request Parameters\+:}}
+\begin{DoxyItemize}
+\item {\ttfamily max\+Distance} (Optional)\+: Maximum distance from the given point.
+\item {\ttfamily lat} (Optional)\+: Latitude of the point for distance filtering.
+\item {\ttfamily lon} (Optional)\+: Longitude of the point for distance filtering.
+\end{DoxyItemize}
+
+{\bfseries{Responses\+:}}
+\begin{DoxyItemize}
+\item {\ttfamily 200 OK}\+: Returns a list of filtered bus locations.
+\item {\ttfamily 400 Bad Request}\+: Returns if {\ttfamily max\+Distance} is provided without {\ttfamily lat} or {\ttfamily lon}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+Distance} & Optional maximum distance from the specified point. \\
+\hline
+{\em lat} & Optional latitude for filtering by distance. \\
+\hline
+{\em lon} & Optional longitude for filtering by distance. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A {\ttfamily \doxylink{}{Response\+Entity}} containing the filtered list of bus locations or a bad request response. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+api/src/main/java/com/c8/api/controllers/Bus\+Information\+Controller.\+java\end{DoxyCompactItemize}

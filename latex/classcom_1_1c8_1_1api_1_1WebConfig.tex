@@ -1,0 +1,47 @@
+\doxysection{com.\+c8.\+api.\+Web\+Config Class Reference}
+\hypertarget{classcom_1_1c8_1_1api_1_1WebConfig}{}\label{classcom_1_1c8_1_1api_1_1WebConfig}\index{com.c8.api.WebConfig@{com.c8.api.WebConfig}}
+Inheritance diagram for com.\+c8.\+api.\+Web\+Config\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1c8_1_1api_1_1WebConfig}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1WebConfig_a0693d56b69fdaf3063c66ca0d6fc8d38}{add\+Cors\+Mappings}} (Cors\+Registry registry)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Web configuration class for setting up CORS (Cross-\/\+Origin Resource Sharing) in the application. This class implements {\ttfamily \doxylink{}{Web\+Mvc\+Configurer}} to customize web-\/related configurations. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1c8_1_1api_1_1WebConfig_a0693d56b69fdaf3063c66ca0d6fc8d38}\index{com.c8.api.WebConfig@{com.c8.api.WebConfig}!addCorsMappings@{addCorsMappings}}
+\index{addCorsMappings@{addCorsMappings}!com.c8.api.WebConfig@{com.c8.api.WebConfig}}
+\doxysubsubsection{\texorpdfstring{addCorsMappings()}{addCorsMappings()}}
+{\footnotesize\ttfamily \label{classcom_1_1c8_1_1api_1_1WebConfig_a0693d56b69fdaf3063c66ca0d6fc8d38} 
+void com.\+c8.\+api.\+Web\+Config.\+add\+Cors\+Mappings (\begin{DoxyParamCaption}\item[{Cors\+Registry}]{registry}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Configures CORS mappings to allow cross-\/origin requests from any origin.
+
+The configuration allows\+:
+\begin{DoxyItemize}
+\item Any origin pattern ({\ttfamily allowed\+Origin\+Patterns("{}\texorpdfstring{$\ast$}{*}"{})})
+\item Only GET methods ({\ttfamily allowed\+Methods("{}\+GET"{})})
+\item Any headers ({\ttfamily allowed\+Headers("{}\texorpdfstring{$\ast$}{*}"{})})
+\item Credentials to be included in the request ({\ttfamily allow\+Credentials(true)})
+\end{DoxyItemize}
+
+{\bfseries{Note\+:}} This is a permissive CORS configuration intended for local development purposes. In production, it is recommended to restrict allowed origins to known domains.
+
+
+\begin{DoxyParams}{Parameters}
+{\em registry} & The {\ttfamily \doxylink{}{Cors\+Registry}} to which CORS mappings are added. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+api/src/main/java/com/c8/api/Web\+Config.\+java\end{DoxyCompactItemize}

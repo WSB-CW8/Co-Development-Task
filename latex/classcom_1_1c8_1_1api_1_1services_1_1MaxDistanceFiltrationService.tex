@@ -1,0 +1,42 @@
+\doxysection{com.\+c8.\+api.\+services.\+Max\+Distance\+Filtration\+Service Class Reference}
+\hypertarget{classcom_1_1c8_1_1api_1_1services_1_1MaxDistanceFiltrationService}{}\label{classcom_1_1c8_1_1api_1_1services_1_1MaxDistanceFiltrationService}\index{com.c8.api.services.MaxDistanceFiltrationService@{com.c8.api.services.MaxDistanceFiltrationService}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}} $>$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1services_1_1MaxDistanceFiltrationService_aba636e59f2db230fbaee525f8afb7730}{filter\+By\+Distance}} (List$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}} $>$ locations, double lat, double lon, int max\+Distance)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Service for filtering bus locations by distance.
+
+This service provides functionality to filter bus locations based on a given maximum distance from a specified latitude and longitude. It calculates the distance between the given coordinates and each bus\textquotesingle{}s location using the Haversine formula. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1c8_1_1api_1_1services_1_1MaxDistanceFiltrationService_aba636e59f2db230fbaee525f8afb7730}\index{com.c8.api.services.MaxDistanceFiltrationService@{com.c8.api.services.MaxDistanceFiltrationService}!filterByDistance@{filterByDistance}}
+\index{filterByDistance@{filterByDistance}!com.c8.api.services.MaxDistanceFiltrationService@{com.c8.api.services.MaxDistanceFiltrationService}}
+\doxysubsubsection{\texorpdfstring{filterByDistance()}{filterByDistance()}}
+{\footnotesize\ttfamily \label{classcom_1_1c8_1_1api_1_1services_1_1MaxDistanceFiltrationService_aba636e59f2db230fbaee525f8afb7730} 
+List$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}} $>$ com.\+c8.\+api.\+services.\+Max\+Distance\+Filtration\+Service.\+filter\+By\+Distance (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{classcom_1_1c8_1_1api_1_1models_1_1BusLocation}{Bus\+Location}} $>$}]{locations}{, }\item[{double}]{lat}{, }\item[{double}]{lon}{, }\item[{int}]{max\+Distance}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Filters a list of bus locations by distance from a specified point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em locations} & The list of {\ttfamily \doxylink{}{Bus\+Location}} objects to be filtered. \\
+\hline
+{\em lat} & The latitude of the point to calculate distance from. \\
+\hline
+{\em lon} & The longitude of the point to calculate distance from. \\
+\hline
+{\em max\+Distance} & The maximum allowed distance in meters. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A list of {\ttfamily \doxylink{}{Bus\+Location}} objects that are within the specified distance. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+api/src/main/java/com/c8/api/services/Max\+Distance\+Filtration\+Service.\+java\end{DoxyCompactItemize}
